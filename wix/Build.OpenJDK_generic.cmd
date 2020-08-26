@@ -270,7 +270,7 @@ FOR %%A IN (%ARCH%) DO (
                 echo Signing failed. Probably cannot find the timestamp server at %%s
                 set /a timestampErrors+=1
             )
-            REM wait always more seconds after each retry
+            REM always wait more than seconds after each retry
             choice /N /T:%%a /C:Y /D:Y >NUL
         )
 
