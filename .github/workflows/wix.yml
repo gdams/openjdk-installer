@@ -34,7 +34,7 @@ jobs:
         wget -q "https://github.com/AdoptOpenJDK/IcedTea-Web/releases/download/${{ env.ICEDTEA_WEB_VERSION }}/${{ env.ICEDTEA_WEB_VERSION }}.win.bin.zip"
         unzip icedtea-web-*.win.bin.zip
         rm icedtea-web-*.win.bin.zip
-        rmdir /S /Q icedtea-web-image\share\doc
+        Remove-Item 'icedtea-web-image\share\doc' -Recurse
         wget -q "https://github.com/AdoptOpenJDK/openjdk${{ env.MAJOR_VERSION }}-binaries/releases/download/${{ env.TAG }}/OpenJDK${{ env.MAJOR_VERSION }}U-jdk_x64_windows_${{ env.JVM }}_${{ env.SUB_TAG }}.zip"
         wget -q "https://github.com/AdoptOpenJDK/openjdk${{ env.MAJOR_VERSION }}-binaries/releases/download/${{ env.TAG }}/OpenJDK${{ env.MAJOR_VERSION }}U-jre_x64_windows_${{ env.JVM }}_${{ env.SUB_TAG }}.zip"
         call powershell.exe ./CreateSourceFolder.AdoptOpenJDK.ps1
