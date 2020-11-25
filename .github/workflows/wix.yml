@@ -17,12 +17,16 @@ jobs:
     - name: Install dependencies
       run: |
         choco install wget
-
     - name: Setup environment variables
       uses: allenevans/set-env@v2.0.0
       with:
-        MAJOR_VERSION: 8
-        FULL_VERSION: 1.8.0_265
+        PRODUCT_MAJOR_VERSION: 8
+        PRODUCT_MINOR_VERSION: 0
+        PRODUCT_MAINTENANCE_VERSION: 265
+        PRODUCT_PATCH_VERSION: 0
+        PRODUCT_BUILD_NUMBER: 01
+        MSI_PRODUCT_VERSION: 8.0.265.1
+        ARCH: x64
         TAG: jdk8u265-b01
         SUB_TAG: 8u265b01
         JVM: hotspot
@@ -35,8 +39,8 @@ jobs:
         unzip icedtea-web-*.win.bin.zip
         rm icedtea-web-*.win.bin.zip
         Remove-Item 'icedtea-web-image\share\doc' -Recurse
-        wget -q "https://github.com/AdoptOpenJDK/openjdk${{ env.MAJOR_VERSION }}-binaries/releases/download/${{ env.TAG }}/OpenJDK${{ env.MAJOR_VERSION }}U-jdk_x64_windows_${{ env.JVM }}_${{ env.SUB_TAG }}.zip"
-        wget -q "https://github.com/AdoptOpenJDK/openjdk${{ env.MAJOR_VERSION }}-binaries/releases/download/${{ env.TAG }}/OpenJDK${{ env.MAJOR_VERSION }}U-jre_x64_windows_${{ env.JVM }}_${{ env.SUB_TAG }}.zip"
+        wget -q "https://github.com/AdoptOpenJDK/openjdk${{ env.PRODUCT_MAJOR_VERSION }}-binaries/releases/download/${{ env.TAG }}/OpenJDK${{ env.PRODUCT_MAJOR_VERSION }}U-jdk_${{ env.ARCH }}_windows_${{ env.JVM }}_${{ env.SUB_TAG }}.zip"
+        wget -q "https://github.com/AdoptOpenJDK/openjdk${{ env.PRODUCT_MAJOR_VERSION }}-binaries/releases/download/${{ env.TAG }}/OpenJDK${{ env.PRODUCT_MAJOR_VERSION }}U-jre_${{ env.ARCH }}_windows_${{ env.JVM }}_${{ env.SUB_TAG }}.zip"
         ./CreateSourceFolder.AdoptOpenJDK.ps1
 
     - name: Create Package
