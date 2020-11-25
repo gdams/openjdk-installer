@@ -41,5 +41,6 @@ jobs:
 
     - name: Create Package
       run: |
-        cmd /c Build.OpenJDK_generic.cmd
+        cd wix
+        call Build.OpenJDK_generic.cmd
       shell: cmd
