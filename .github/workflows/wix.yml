@@ -16,7 +16,7 @@ jobs:
     
     - name: Install dependencies
       run: |
-        dotnet add package WGETWindows --version 1.11.4
+        choco install wget
 
     - name: Setup environment variables
       uses: allenevans/set-env@v2.0.0
