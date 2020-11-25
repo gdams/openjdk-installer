@@ -42,3 +42,4 @@ jobs:
     - name: Create Package
       run: |
         call Build.OpenJDK_generic.cmd
+      shell: cmd
