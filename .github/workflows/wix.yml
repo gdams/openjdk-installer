@@ -16,7 +16,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        Invoke-WebRequest -UseBasicParsing 'https://wixtoolset.org/downloads/v3.14.0.4118/wix314.exe' -OutFile 'C:\temp\wix.exe';
+        Invoke-WebRequest -UseBasicParsing 'https://wixtoolset.org/downloads/v3.14.0.3910/wix314.exe' -OutFile 'C:\temp\wix.exe';
         Start-Process -Wait -FilePath 'C:\temp\wix.exe' -ArgumentList '/S'
 
     - name: Setup environment variables
