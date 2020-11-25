@@ -43,8 +43,16 @@ jobs:
         wget -q "https://github.com/AdoptOpenJDK/openjdk${{ env.PRODUCT_MAJOR_VERSION }}-binaries/releases/download/${{ env.TAG }}/OpenJDK${{ env.PRODUCT_MAJOR_VERSION }}U-jre_${{ env.ARCH }}_windows_${{ env.JVM }}_${{ env.SUB_TAG }}.zip"
         ./CreateSourceFolder.AdoptOpenJDK.ps1
 
-    - name: Create Package
+    - name: Create JDK Installer
       run: |
         cd wix
+        set PRODUCT_CATEGORY=jdk
+        call Build.OpenJDK_generic.cmd
+      shell: cmd
+
+    - name: Create JRE Installer
+      run: |
+        cd wix
+        set PRODUCT_CATEGORY=jre
         call Build.OpenJDK_generic.cmd
       shell: cmd
