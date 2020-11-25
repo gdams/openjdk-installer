@@ -37,7 +37,7 @@ jobs:
         Remove-Item 'icedtea-web-image\share\doc' -Recurse
         wget -q "https://github.com/AdoptOpenJDK/openjdk${{ env.MAJOR_VERSION }}-binaries/releases/download/${{ env.TAG }}/OpenJDK${{ env.MAJOR_VERSION }}U-jdk_x64_windows_${{ env.JVM }}_${{ env.SUB_TAG }}.zip"
         wget -q "https://github.com/AdoptOpenJDK/openjdk${{ env.MAJOR_VERSION }}-binaries/releases/download/${{ env.TAG }}/OpenJDK${{ env.MAJOR_VERSION }}U-jre_x64_windows_${{ env.JVM }}_${{ env.SUB_TAG }}.zip"
-        call powershell.exe ./CreateSourceFolder.AdoptOpenJDK.ps1
+        ./CreateSourceFolder.AdoptOpenJDK.ps1
 
     - name: Create Package
       run: |
