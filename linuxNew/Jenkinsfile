@@ -1,9 +1,5 @@
-NODE_LABEL = "dockerBuild&&linux&&x64" // Dynamic docker machines from Azure
-
 pipeline {
-    agent {
-        label NODE_LABEL
-    }
+    agent none
     tools {
         jdk "JDK11"
     }
@@ -11,7 +7,7 @@ pipeline {
         stage('Linux Installers') {
             matrix {
                 agent {
-                    label NODE_LABEL
+                    label "dockerBuild&&linux&&x64" // Dynamic docker machines from Azure
                 }
                 axes {
                     axis {
@@ -19,14 +15,27 @@ pipeline {
                         values '8', '11', '17'
                     }
                     axis {
-                        name 'DISTRO'
-                        values 'Debian', 'RedHat', 'Suse'
+                        name 'PLATFORM'
+                        values 'x64', 'aarch64', 'ppc64le', 's390x', 'arm32'
+                    }
+                }
+                // We don't produce an s390x binary for JDK8
+                excludes {
+                    exclude {
+                        axis {
+                            name 'VERSION'
+                            values '8'
+                        }
+                        axis {
+                            name 'PLATFORM'
+                            values 's390x'
+                        }
                     }
                 }
                 stages {
                     stage('Build Installer') {
                         steps {
-                            echo "Installer Job for Temurin ${VERSION} - ${DISTRO}"
+                            echo "Installer Job for Temurin ${VERSION} - ${PLATFORM}"
                             setup()
                             dir('linuxNew') {
                                 buildAndTest()
@@ -42,7 +51,7 @@ pipeline {
 
 def setup() {
     cleanWs()
-    if (PLATFORM == "aarch64") {
+    if (PLATFORM != "x64") {
         env.TESTCONTAINERS_RYUK_DISABLED=true
         env.TESTCONTAINERS_CHECKS_DISABLE=true
     }
@@ -59,7 +68,7 @@ def buildAndTest() {
         default: //Adoptium API 
             break;
     }
-    sh("./gradlew packageJdk${DISTRO} checkJdk${DISTRO} --parallel -PPRODUCT=${PRODUCT} -PPRODUCT_VERSION=${VERSION}")
+    sh("./gradlew --parallel check -PPRODUCT=${PRODUCT} -PPRODUCT_VERSION=${VERSION}")
     archiveArtifacts artifacts: '**/*/build/ospackage/*,**/*/build/reports/**'
 }
 
