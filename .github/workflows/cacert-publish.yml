@@ -1,0 +1,36 @@
+name: Update Adoptium CACerts Debian Package
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'linux/ca-certificates/**'
+  workflow_dispatch:
+
+jobs:
+  build-ca-certificates:
+    name: Check CA Certificates
+    uses: ./.github/workflows/build-cacert.yml
+
+  upload-ca-certificates:
+    needs: [ build-ca-certificates ]
+    name: Upload CA Certificates
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./linux
+
+    steps:
+    - uses: jfrog/setup-jfrog-cli@v2
+
+    - name: Restore build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: ca-certificates
+
+    - name: Upload CA Certificates
+      run: >
+        distro_list=""
+        deb_versions=( buster bullseye bionic focal impish jammy )
+        for distro in "${deb_versions[@]}"; do distro_list+="deb.distribution=${distro};"; done
+        jf rt u "**/build/ospackage/(*.deb)" deb/pool/main/a/adoptium-ca-certificates/{1} --recursive=false \
+        --props "${distro_list}deb.component=main;deb.architecture=all"
