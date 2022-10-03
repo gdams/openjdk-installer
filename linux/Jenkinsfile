@@ -68,7 +68,7 @@ pipeline {
                         }
                     }
                     agent {
-                        label "${ARCH}" == "x86_64" ? "${env.NODE_LABEL_RPM}": "${env.NODE_LABEL_DEB}"
+                        label "${ARCH}" == "x86_64" | "${ARCH}" == "all" ? "${env.NODE_LABEL_RPM}": "${env.NODE_LABEL_DEB}"
                     }
                     steps{
                         dir('linuxDebian') {
