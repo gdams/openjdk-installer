@@ -20,7 +20,7 @@ jobs:
         working-directory: ./linux
 
     steps:
-    - uses: jfrog/setup-jfrog-cli@v2
+    - uses: jfrog/setup-jfrog-cli@v3
 
     - name: Restore build artifacts
       uses: actions/download-artifact@v3
