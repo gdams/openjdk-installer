@@ -9,4 +9,4 @@ jobs:
   codefreeze:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "${{ github.event.pull_request_target.number }}"
+      - run: echo "${{ github.event.pull_request.number }}"
