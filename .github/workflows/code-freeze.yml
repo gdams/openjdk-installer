@@ -4,10 +4,9 @@ name: Code Freeze Bot
 on:
   pull_request_target:
     branches: [ "master" ]
-  issue_comment:
-    types: [created]
 
 jobs:
   codefreeze:
-    uses: adoptium/.github/.github/workflows/code-freeze.yml@main
-    secrets: inherit
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${{ github.event.pull_request_target.number }}"
