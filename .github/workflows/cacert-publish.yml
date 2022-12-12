@@ -32,7 +32,7 @@ jobs:
       - name: Build
         run: |
           export _JAVA_OPTIONS="-Xmx4G"
-          ./gradlew --parallel :ca-certificates:check --stacktrace
+          ./gradlew --parallel :ca-certificates:package --stacktrace
 
       - name: Check if deb file exists in Artifactory
         id: check-deb
@@ -41,7 +41,7 @@ jobs:
           curl -s -o /dev/null -w "%{http_code}" https://packages.adoptium.net/artifactory/deb/pool/main/a/adoptium-ca-certificates/${FILE}
 
       - name: Upload deb file to Artifactory
-        if: steps.check-deb.outputs.stdout == 404
+        if: steps.check-deb.outputs.stdout == "404"
         run: |
           debVersionList=("buster" "bullseye" "bionic" "focal" "jammy" "kinetic")
           for debVersion in "${debVersionList[@]}"; do
