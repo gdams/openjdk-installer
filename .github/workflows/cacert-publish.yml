@@ -1,4 +1,4 @@
-name: Check Linux Packages
+name: Publish ca-certificates
 on:
   push:
     branches: [ master ]
@@ -38,10 +38,11 @@ jobs:
         id: check-deb
         run: |
           FILE=$(ls ca-certificates/debian/build/ospackage/*.deb)
-          curl -s -o /dev/null -w "%{http_code}\n" https://packages.adoptium.net/artifactory/deb/pool/main/a/adoptium-ca-certificates/foo
+          CODE=$(curl -s -o /dev/null -w "%{http_code}\n" https://packages.adoptium.net/artifactory/deb/pool/main/a/adoptium-ca-certificates/${FILE})
+          echo "::set-output name=status::$CODE"
 
       - name: Upload deb file to Artifactory
-        if: steps.check-deb.outputs.stdout == '404'
+        if: steps.check-deb.outputs.status == '404'
         run: |
           debVersionList=("buster" "bullseye" "bionic" "focal" "jammy" "kinetic")
           for debVersion in "${debVersionList[@]}"; do
