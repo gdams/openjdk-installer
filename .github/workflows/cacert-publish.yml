@@ -50,7 +50,7 @@ jobs:
           done
           FILE=$(ls ca-certificates/debian/build/ospackage/*.deb)
           curl -u ${ARTIFACTORY_USER}:${ARTIFACTORY_PASSWORD} \
-          -X PUT -T $FILE "https://packages.adoptium.net/artifactory/deb/pool/main/a/adoptium-ca-certificates/$(basename ${FILE});${distroList}"
+          -X PUT -T $FILE "https://packages.adoptium.net/artifactory/deb/pool/main/a/adoptium-ca-certificates/$(basename ${FILE});deb.architecture=all;deb.component=main;${distroList}"
         env:
           ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER }}
           ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
