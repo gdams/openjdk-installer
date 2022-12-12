@@ -38,7 +38,7 @@ jobs:
         id: check-deb
         run: |
           FILE=$(ls ca-certificates/debian/build/ospackage/*.deb)
-          curl -s -o /dev/null -w "%{http_code}" https://packages.adoptium.net/artifactory/deb/pool/main/a/adoptium-ca-certificates/${FILE}
+          curl -s -o /dev/null -w "%{http_code}\n" https://packages.adoptium.net/artifactory/deb/pool/main/a/adoptium-ca-certificates/foo
 
       - name: Upload deb file to Artifactory
         if: steps.check-deb.outputs.stdout == '404'
