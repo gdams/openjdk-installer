@@ -78,14 +78,24 @@
     
     <CustomAction Id="PerMachineInstall" Property="TARGETDIR" Value="[INSTALLDIR_PER_MACHINE]" Execute="immediate"/>    
     <CustomAction Id="PerUserInstall" Property="TARGETDIR" Value="[INSTALLDIR_PER_USER]" Execute="immediate"/>
+    <CustomAction Id="SetSecureACLs" 
+      Directory="INSTALLDIR" 
+      Execute="immediate" 
+      ExeCommand="&quot;[SystemFolder]WindowsPowerShell\v1.0\powershell.exe&quot; -ExecutionPolicy Bypass -NoProfile -NonInteractive -File &quot;[INSTALLDIR]setACLs.ps1&quot; -installDir &quot;[INSTALLDIR]&quot;" 
+      Return="check"
+    />
 
     <InstallExecuteSequence>
-        <Custom Action="PerMachineInstall" Before="CostFinalize">ALLUSERS=1  OR (ALLUSERS=2 AND Privileged)</Custom>
-        <Custom Action="PerUserInstall"    Before="CostFinalize">ALLUSERS="" OR (ALLUSERS=2 AND (NOT Privileged))</Custom>
+      <Custom Action="PerMachineInstall" Before="CostFinalize">ALLUSERS=1  OR (ALLUSERS=2 AND Privileged)</Custom>
+      <Custom Action="PerUserInstall" Before="CostFinalize">ALLUSERS="" OR (ALLUSERS=2 AND (NOT Privileged))</Custom>
+      <Custom Action="SetSecureACLs" After="InstallFiles">NOT Installed</Custom>
     </InstallExecuteSequence>
 
     <!-- Add the shortcuts to your installer package -->
     <DirectoryRef Id="INSTALLDIR">
+      <Component Id="SetACLsScript" Guid="*">
+        <File Id="SetACLsScript" Name="setACLs.ps1" Source=".\setACLs.ps1" KeyPath="yes" />
+      </Component>
       <Component Id="CleanupMainInstallDir" Guid="*">
         <RegistryValue Root="HKMU" Key="SOFTWARE\$(var.ProductManufacturer)\$(var.ProductCategory)\$(var.ProductVersion)\$(var.JVM)\MSI" Name="Path" Type="string" Value="[INSTALLDIR]" KeyPath="yes" />
         <RegistryValue Root="HKMU" Key="SOFTWARE\$(var.ProductManufacturer)\$(var.ProductCategory)\$(var.ProductVersion)\$(var.JVM)\MSI" Name="Main" Type="integer" Value="1" />
