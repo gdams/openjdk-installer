@@ -1,4 +1,4 @@
-FROM fedora:36
+FROM fedora:44
 
 RUN dnf update -y && dnf install -y rpmdevtools \
 	rpm-sign \
