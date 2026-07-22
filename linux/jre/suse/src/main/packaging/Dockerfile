@@ -1,4 +1,4 @@
-FROM opensuse/leap:15.6
+FROM opensuse/leap:16.0
 
 RUN zypper update -y && zypper install -y rpm-build \
 	rpm-devel \
